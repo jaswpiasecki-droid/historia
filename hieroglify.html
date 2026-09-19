@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Tłumacz hieroglifów</title>
+    </head>
+    <body>
+        <h3>Wybierz jak chcesz tłumaczyć</h3>
+        <button id="al_hi">litery na hieroglify</button>
+        <button id="hi_al">hieroglify na litery</button><br><br><br>
+        <input type="text" id="dane">
+        <button id="tak">Tłumacz</button>
+        <h1 id="wynik"></h1>
+        <script src="https://code.jquery.com/jquery-4.0.0.min.js"></script>
+        <script>
+            var klucz_al_hi = {'a':'𓄿',               // podstwa tłumczenia, klucz
+                       'b':'𓃀',
+                       'c':'𓋴',
+                       'd':'𓂧',
+                       'e':'𓂝',
+                       'f':'𓆑',
+                       'g':'𓎼',
+                       'h':'𓉔',
+                       'i':'𓇋',
+                       'j':'𓆓',
+                       'k':'𓎡',
+                       'l':'𓃭',
+                       'm':'𓅓',
+                       'n':'𓈖',
+                       'o':'𓍯',
+                       'p':'𓊪',
+                       'q':'𓈎',
+                       'r':'𓂋',
+                       's':'𓈙',
+                       't':'𓏏',
+                       'u':'𓏲',
+                       'w':'𓅱',
+                       'y':'𓇌',
+                       'z':'𓊃',
+            }
+            var klucz_hi_al = {}                            //klucz w drugą stronę
+            var litery = Object.keys(klucz_al_hi)
+            var znaki = Object.values(klucz_al_hi)
+            for(var x = 0; x < litery.length;x++){
+                klucz_hi_al[znaki[x]] = litery[x]            //odwaracm pierwszy klucz
+            }
+            var tryb = 0                                     //tryb tłumaczenia
+
+
+            function tlumacz(dane,tryb) {
+                dane = dane.toLowerCase()                     //funkcja tłumacząca, tryb 0 - na hieroglify, tryb 1 - z hieroglifów
+                var wynik = ''                                //wynik tłumaczenia
+                if(0 === tryb){                                 // na hieroglify
+                    for(let litera of dane){
+                        var hieroglif = klucz_al_hi[litera]
+                        if(undefined === hieroglif){
+                            wynik = wynik + litera
+                        }
+                        else{
+                            wynik = wynik + hieroglif
+                        }                        
+                    }
+                    return wynik
+                }
+                if(1 === tryb){                                 // na litery
+                    for(let litera of dane){
+                        var hieroglif = klucz_hi_al[litera]
+                        if(undefined === hieroglif){
+                            wynik = wynik + litera
+                        }
+                        else{
+                            wynik = wynik + hieroglif
+                        }
+                    }
+                    return wynik
+                }
+            }
+
+            $("#tak").click(function(){
+                let dane = $('#dane').val()
+                let wynik = tlumacz(dane,tryb)
+                $("#wynik").text(wynik)
+            })
+
+            $("#al_hi").click(function(){
+                tryb = 0
+                $('#hi_al').css('color','black')
+                $('#al_hi').css('color','blue')
+
+            })
+            $("#hi_al").click(function(){
+                tryb = 1
+                $('#hi_al').css('color','blue')
+                $('#al_hi').css('color','black')
+            })
+
+
+        </script>
+        <h5><span style="color: red;" id="al_hi_kolor">Nie tłumaczy znaków specjalnych</span></h5>
+        <h5>Uwaga! TO nie jest prawdziwy egipski. Jest to tylko zapis fonetyczny za pomocą rzymskich<br> symboli zaczerpniety z strony https://dencode.com/pl/string/hieroglyphs i zmodyfikowany przez autora.</h5>
+    </body>
+</html>
